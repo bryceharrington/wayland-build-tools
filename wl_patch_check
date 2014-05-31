@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ~/bin/wl_defines.sh
+
 ## == Code Review ==
 ## Is the code correct?
 ## Does it fix the problem that it proposed to fix? Or does it successfully

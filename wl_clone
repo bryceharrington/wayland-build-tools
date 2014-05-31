@@ -7,7 +7,6 @@
 # TODO: Log output
 
 
-
 clone_or_update() {
     repo=$1
     dest=$(basename $repo)
@@ -45,3 +44,12 @@ clone_or_update git://anongit.freedesktop.org/pixman
 clone_or_update git://anongit.freedesktop.org/cairo
 clone_or_update git://git.sv.gnu.org/libunwind
 clone_or_update git://anongit.freedesktop.org/wayland/weston
+
+if [ ${INCLUDE_XWAYLAND} ]; then
+	if [ ${WL_BITS} = "32" ]; then
+		clone_or_update git://anongit.freedesktop.org/xorg/lib/libxtrans
+	fi
+
+	clone_or_update https://github.com/anholt/libepoxy.git
+	clone_or_update git://anongit.freedesktop.org/xorg/xserver
+fi

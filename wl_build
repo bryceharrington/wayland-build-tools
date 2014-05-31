@@ -82,5 +82,35 @@ git clean -xfd
         --enable-headless-compositor \
 	--enable-demo-clients-install
 compile
-cd $WLROOT
 
+if [ ${INCLUDE_XWAYLAND} ]; then
+	if [ ${WL_BITS} = 32 ]; then
+		echo
+		echo "libxtrans"
+		cd $WLROOT/libxtrans
+		./autogen.sh --prefix=$WLD
+		compile
+	fi
+
+	echo
+	echo "libepoxy"
+	cd $WLROOT/libepoxy
+	./autogen.sh --prefix=$WLD
+	compile
+
+	echo
+	echo "xserver"
+	cd $WLROOT/xserver
+	./autogen.sh --prefix=$WLD --disable-docs --disable-devel-docs \
+		--enable-xwayland --disable-xorg --disable-xvfb --disable-xnest \
+		--disable-xquartz --disable-xwin
+	compile
+
+	echo
+	echo "Paths"
+	mkdir -p $WLD/share/X11/xkb/rules
+    ln -s /usr/share/X11/xkb/rules/evdev $WLD/share/X11/xkb/rules/
+    ln -s /usr/bin/xkbcomp $WLD/bin/
+fi
+
+cd $WLROOT

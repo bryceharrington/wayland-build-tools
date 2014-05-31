@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ~/bin/wl_defines.sh
+
 sudo apt-get -y install doxygen
 sudo apt-get -y install llvm
 sudo apt-get -y install libexpat1-dev
@@ -8,3 +10,5 @@ sudo apt-get -y install x11proto-dri2-dev
 #sudo apt-get -y install x11proto-dri3-dev
 sudo apt-get -y install libxcursor-dev
 sudo apt-get -y build-dep mesa
+
+	
