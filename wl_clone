@@ -1,0 +1,47 @@
+#!/bin/bash
+
+. ~/bin/wl_defines.sh
+
+# TODO: Check if tree already exists first
+# TODO: Bail if errors
+# TODO: Log output
+
+
+
+clone_or_update() {
+    repo=$1
+    dest=$(basename $repo)
+
+    cd ${WLROOT}
+    echo
+    echo $dest
+    if [ ! -d ${dest} ]; then
+	git clone ${repo}
+	if [ $? != 0 ]; then
+	    echo "Error: Could not clone repository"
+	    exit 1
+	fi
+    fi
+    cd ${dest}
+    git checkout master
+    if [ $? != 0 ]; then
+	echo "Error: Problem checking out master"
+	exit 1
+    fi
+    git pull
+    if [ $? != 0 ]; then
+	echo "Error: Could not pull from upstream"
+	exit 1
+    fi
+    cd ${WLROOT}
+}
+
+clone_or_update git://anongit.freedesktop.org/wayland/wayland
+clone_or_update git://anongit.freedesktop.org/git/mesa/drm
+clone_or_update git://anongit.freedesktop.org/mesa/mesa
+clone_or_update git://anongit.freedesktop.org/xcb/libxcb
+clone_or_update git://github.com/xkbcommon/libxkbcommon
+clone_or_update git://anongit.freedesktop.org/pixman
+clone_or_update git://anongit.freedesktop.org/cairo
+clone_or_update git://git.sv.gnu.org/libunwind
+clone_or_update git://anongit.freedesktop.org/wayland/weston

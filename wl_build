@@ -1,0 +1,86 @@
+#!/bin/bash
+
+. ~/bin/wl_defines.sh
+
+if [ ! -e $WLROOT ]; then
+    exit 1
+fi
+
+export PATH=$PATH:${WLROOT}/install/bin
+
+# Bail if errors
+set -e
+
+compile() {
+    make -j32 && make install
+    if [ $? != 0 ]; then
+	echo "Build Error.  Terminating"
+	exit
+    fi
+}
+
+# TODO: Check if tree doesn't exist
+# TODO: Log output
+# TODO: If it's been a while since we last ran successfully, then
+#       delete $WLD
+
+echo
+echo "wayland"
+mkdir -p $WLD/share/aclocal
+cd $WLROOT/wayland
+./autogen.sh --prefix=$WLD
+compile
+
+echo
+echo "drm"
+cd $WLROOT/drm
+./autogen.sh --prefix=$WLD --disable-libkms
+compile
+
+echo
+echo "mesa"
+cd $WLROOT/mesa
+git clean -xfd
+./autogen.sh --prefix=$WLD --enable-gles2 --disable-gallium-egl --disable-dri3 \
+    --disable-llvm-shared-libs --disable-opencl \
+    --with-egl-platforms=x11,wayland,drm --enable-gbm --enable-shared-glapi \
+    --with-gallium-drivers=r300,r600,swrast,nouveau
+compile
+
+echo
+echo "libxkbcommon"
+cd $WLROOT/libxkbcommon/
+./autogen.sh --prefix=$WLD --with-xkb-config-root=/usr/share/X11/xkb \
+    --disable-x11
+compile
+
+echo
+echo "pixman"
+cd $WLROOT/pixman
+./autogen.sh --prefix=$WLD
+compile
+
+echo
+echo "cairo"
+cd $WLROOT/cairo
+./autogen.sh --prefix=$WLD --enable-gl --enable-xcb
+compile
+
+echo
+echo "libunwind"
+cd $WLROOT/libunwind
+autoreconf -i
+./configure --prefix=$WLD
+compile
+
+echo
+echo "weston"
+cd $WLROOT/weston
+git clean -xfd
+./autogen.sh --prefix=$WLD --with-cairo=gl --enable-setuid-install=no \
+	--enable-clients \
+        --enable-headless-compositor \
+	--enable-demo-clients-install
+compile
+cd $WLROOT
+
