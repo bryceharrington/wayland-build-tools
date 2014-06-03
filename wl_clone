@@ -37,12 +37,19 @@ clone_or_update() {
 
 clone_or_update git://anongit.freedesktop.org/wayland/wayland
 clone_or_update git://anongit.freedesktop.org/git/mesa/drm
-clone_or_update git://anongit.freedesktop.org/mesa/mesa
+clone_or_update git://anongit.freedesktop.org/xcb/proto
+clone_or_update git://anongit.freedesktop.org/xorg/util/macros
 clone_or_update git://anongit.freedesktop.org/xcb/libxcb
+clone_or_update git://anongit.freedesktop.org/xorg/proto/presentproto
+clone_or_update git://anongit.freedesktop.org/xorg/proto/dri3proto
+clone_or_update git://anongit.freedesktop.org/xorg/lib/libxshmfence
 clone_or_update git://github.com/xkbcommon/libxkbcommon
+clone_or_update git://anongit.freedesktop.org/mesa/mesa
 clone_or_update git://anongit.freedesktop.org/pixman
 clone_or_update git://anongit.freedesktop.org/cairo
 clone_or_update git://git.sv.gnu.org/libunwind
+clone_or_update git://anongit.freedesktop.org/libevdev
+clone_or_update git://anongit.freedesktop.org/wayland/libinput
 clone_or_update git://anongit.freedesktop.org/wayland/weston
 
 if [ ${INCLUDE_XWAYLAND} ]; then
@@ -50,6 +57,18 @@ if [ ${INCLUDE_XWAYLAND} ]; then
 		clone_or_update git://anongit.freedesktop.org/xorg/lib/libxtrans
 	fi
 
-	clone_or_update https://github.com/anholt/libepoxy.git
+	clone_or_update git://github.com/anholt/libepoxy
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/glproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/xproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/xcmiscproto
+	clone_or_update git://anongit.freedesktop.org/xorg/lib/libxtrans
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/bigreqsproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/xextproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/fontsproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/videoproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/recordproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/resourceproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/xf86driproto
+	clone_or_update git://anongit.freedesktop.org/xorg/lib/libxkbfile
 	clone_or_update git://anongit.freedesktop.org/xorg/xserver
 fi

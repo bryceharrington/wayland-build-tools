@@ -6,17 +6,25 @@ if [ ! -e $WLROOT ]; then
     exit 1
 fi
 
-export PATH=$PATH:${WLROOT}/install/bin
-
 # Bail if errors
 set -e
 
+gen() {
+	pkg=$1
+	shift
+	echo
+	echo $pkg
+	cd $WLROOT/$pkg
+	echo "./autogen.sh --prefix=$WLD $*"
+	./autogen.sh --prefix=$WLD $*
+}
+
 compile() {
-    make -j32 && make install
-    if [ $? != 0 ]; then
-	echo "Build Error.  Terminating"
-	exit
-    fi
+	make -j32 && make install
+	if [ $? != 0 ]; then
+		echo "Build Error.  Terminating"
+		exit
+	fi
 }
 
 # TODO: Check if tree doesn't exist
@@ -24,17 +32,35 @@ compile() {
 # TODO: If it's been a while since we last ran successfully, then
 #       delete $WLD
 
-echo
-echo "wayland"
 mkdir -p $WLD/share/aclocal
-cd $WLROOT/wayland
-./autogen.sh --prefix=$WLD
+
+gen wayland
 compile
 
-echo
-echo "drm"
-cd $WLROOT/drm
-./autogen.sh --prefix=$WLD --disable-libkms
+gen drm --disable-libkms
+compile
+
+gen proto
+compile
+
+gen macros
+compile
+
+gen libxcb
+compile
+
+gen presentproto
+compile
+
+gen dri3proto
+compile
+
+gen libxshmfence
+compile
+
+gen libxkbcommon \
+	--with-xkb-config-root=/usr/share/X11/xkb \
+    --disable-x11
 compile
 
 echo
@@ -44,26 +70,14 @@ git clean -xfd
 ./autogen.sh --prefix=$WLD --enable-gles2 --disable-gallium-egl --disable-dri3 \
     --disable-llvm-shared-libs --disable-opencl \
     --with-egl-platforms=x11,wayland,drm --enable-gbm --enable-shared-glapi \
-    --with-gallium-drivers=r300,r600,swrast,nouveau
+    --with-gallium-drivers=swrast,nouveau
 compile
 
-echo
-echo "libxkbcommon"
-cd $WLROOT/libxkbcommon/
-./autogen.sh --prefix=$WLD --with-xkb-config-root=/usr/share/X11/xkb \
-    --disable-x11
+
+gen pixman
 compile
 
-echo
-echo "pixman"
-cd $WLROOT/pixman
-./autogen.sh --prefix=$WLD
-compile
-
-echo
-echo "cairo"
-cd $WLROOT/cairo
-./autogen.sh --prefix=$WLD --enable-gl --enable-xcb
+gen cairo --enable-gl --enable-xcb
 compile
 
 echo
@@ -73,29 +87,68 @@ autoreconf -i
 ./configure --prefix=$WLD
 compile
 
+gen libevdev
+compile
+
+gen libinput
+compile
+
 echo
 echo "weston"
 cd $WLROOT/weston
 git clean -xfd
-./autogen.sh --prefix=$WLD --with-cairo=gl --enable-setuid-install=no \
+./autogen.sh --prefix=$WLD \
+	--with-cairo=gl \
+	--enable-libinput-backend \
+	--enable-setuid-install=no \
 	--enable-clients \
-        --enable-headless-compositor \
+    --enable-headless-compositor \
 	--enable-demo-clients-install
 compile
 
 if [ ${INCLUDE_XWAYLAND} ]; then
 	if [ ${WL_BITS} = 32 ]; then
-		echo
-		echo "libxtrans"
-		cd $WLROOT/libxtrans
-		./autogen.sh --prefix=$WLD
+		gen libxtrans
 		compile
 	fi
 
-	echo
-	echo "libepoxy"
-	cd $WLROOT/libepoxy
-	./autogen.sh --prefix=$WLD
+	gen libepoxy
+	compile
+
+	gen glproto
+	compile
+
+	gen xproto
+	compile
+
+	gen xcmiscproto
+	compile
+
+	gen libxtrans
+	compile
+
+	gen bigreqsproto
+	compile
+
+	gen xextproto
+	compile
+
+	gen fontsproto
+	compile
+
+	gen videoproto
+	compile
+
+	gen recordproto
+	compile
+
+	gen resourceproto
+	compile
+
+	gen xf86driproto
+	compile
+
+	gen libxkbfile
 	compile
 
 	echo
