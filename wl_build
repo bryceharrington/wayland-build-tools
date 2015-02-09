@@ -27,6 +27,10 @@ compile() {
 	fi
 }
 
+distcheck() {
+	make distcheck
+}
+
 # TODO: Check if tree doesn't exist
 # TODO: Log output
 # TODO: If it's been a while since we last ran successfully, then
@@ -67,17 +71,20 @@ echo
 echo "mesa"
 cd $WLROOT/mesa
 git clean -xfd
-./autogen.sh --prefix=$WLD --enable-gles2 --disable-gallium-egl --disable-dri3 \
-    --disable-llvm-shared-libs --disable-opencl \
+./autogen.sh --prefix=$WLD --enable-gles2 --disable-gallium-egl \
     --with-egl-platforms=x11,wayland,drm --enable-gbm --enable-shared-glapi \
-    --with-gallium-drivers=swrast,nouveau
+    --disable-llvm-shared-libs \
+	--disable-dri3 \
+    --with-gallium-drivers=swrast,nouveau,r300,r600
+
+#   --disable-opencl \
 compile
 
 
 gen pixman
 compile
 
-gen cairo --enable-gl --enable-xcb
+gen cairo --enable-xcb --enable-gl
 compile
 
 echo
@@ -93,32 +100,19 @@ compile
 gen libinput
 compile
 
-echo
-echo "weston"
-cd $WLROOT/weston
-git clean -xfd
-./autogen.sh --prefix=$WLD \
-	--with-cairo=gl \
-	--enable-libinput-backend \
-	--enable-setuid-install=no \
-	--enable-clients \
-    --enable-headless-compositor \
-	--enable-demo-clients-install
-compile
-
 if [ ${INCLUDE_XWAYLAND} ]; then
 	if [ ${WL_BITS} = 32 ]; then
 		gen libxtrans
 		compile
 	fi
 
+	gen xproto
+	compile
+
 	gen libepoxy
 	compile
 
 	gen glproto
-	compile
-
-	gen xproto
 	compile
 
 	gen xcmiscproto
@@ -162,8 +156,26 @@ if [ ${INCLUDE_XWAYLAND} ]; then
 	echo
 	echo "Paths"
 	mkdir -p $WLD/share/X11/xkb/rules
-    ln -s /usr/share/X11/xkb/rules/evdev $WLD/share/X11/xkb/rules/
-    ln -s /usr/bin/xkbcomp $WLD/bin/
+	if [ ! -e $WLD/share/X11/xkb/rules/evdev ]; then
+		ln -s /usr/share/X11/xkb/rules/evdev $WLD/share/X11/xkb/rules/
+	fi
+	if [ ! -e $WLD/bin/xkbcomp ]; then
+		ln -s /usr/bin/xkbcomp $WLD/bin/
+	fi
 fi
+
+echo
+echo "weston"
+cd $WLROOT/weston
+git clean -xfd
+./autogen.sh --prefix=$WLD \
+	--with-cairo=gl \
+	--with-xserver-path=$WLD/bin/Xwayland \
+	--enable-setuid-install=no \
+	--enable-clients \
+    --enable-headless-compositor \
+	--enable-demo-clients-install
+compile
+distcheck
 
 cd $WLROOT
