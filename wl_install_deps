@@ -7,23 +7,27 @@ sudo apt-get -y install autoconf automake bison debhelper dpkg-dev flex
 sudo apt-get -y install pkg-config quilt libudev-dev python-libxml2
 
 # wayland/weston specific stuff
+sudo apt-get -y install xmlto
 sudo apt-get -y install doxygen
 sudo apt-get -y install linux-libc-dev
 sudo apt-get -y install libexpat1-dev
 sudo apt-get -y install libmtdev-dev
 sudo apt-get -y install libpam0g-dev
 
-sudo apt-get -y install llvm-3.1-dev
-sudo ln -sf llvm-config-3.1 /usr/bin/llvm-config
+sudo apt-get -y install llvm-dev
+sudo apt-get -y install python-mako
 
 # xwayland specific stuff
 if [ ${INCLUDE_XWAYLAND} ]; then
 	sudo apt-get -y install libxcb-composite0-dev
+	sudo apt-get -y install x11proto-randr-dev
+	sudo apt-get -y install x11proto-composite-dev
+	sudo apt-get -y install x11proto-xinerama-dev
 	sudo apt-get -y install x11proto-dri2-dev
 	sudo apt-get -y install x11proto-gl-dev
 	sudo apt-get -y install xutils-dev
 	sudo apt-get -y install libxcursor-dev
-	sudo apt-get -y install libdrm-dev
+	#sudo apt-get -y install libdrm-dev
 	sudo apt-get -y install libx11-dev
 	sudo apt-get -y install libx11-xcb-dev
     #sudo apt-get -y install x11proto-dri3-dev
