@@ -7,9 +7,8 @@
 # TODO: Log output
 
 git_pull() {
-    cd $1
+    cd ${WLROOT}/$1
     git pull
-    cd ..
 }
 
 git_pull wayland
@@ -19,4 +18,5 @@ git_pull libxkbcommon
 git_pull pixman
 git_pull cairo
 git_pull libunwind
+git_pull libinput
 git_pull weston
