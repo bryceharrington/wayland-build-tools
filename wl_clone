@@ -15,22 +15,22 @@ clone_or_update() {
     echo
     echo $dest
     if [ ! -d ${dest} ]; then
-	git clone ${repo}
-	if [ $? != 0 ]; then
-	    echo "Error: Could not clone repository"
-	    exit 1
-	fi
+		git clone ${repo} ${dest}
+		if [ $? != 0 ]; then
+			echo "Error: Could not clone repository"
+			exit 1
+		fi
     fi
     cd ${dest}
     git checkout master
     if [ $? != 0 ]; then
-	echo "Error: Problem checking out master"
-	exit 1
+		echo "Error: Problem checking out master"
+		exit 1
     fi
     git pull
     if [ $? != 0 ]; then
-	echo "Error: Could not pull from upstream"
-	exit 1
+		echo "Error: Could not pull from upstream"
+		exit 1
     fi
     cd ${WLROOT}
 }
@@ -69,6 +69,7 @@ if [ ${INCLUDE_XWAYLAND} ]; then
 	clone_or_update git://anongit.freedesktop.org/xorg/proto/recordproto
 	clone_or_update git://anongit.freedesktop.org/xorg/proto/resourceproto
 	clone_or_update git://anongit.freedesktop.org/xorg/proto/xf86driproto
+	clone_or_update git://anongit.freedesktop.org/xorg/proto/randrproto
 	clone_or_update git://anongit.freedesktop.org/xorg/lib/libxkbfile
 	clone_or_update git://anongit.freedesktop.org/xorg/xserver
 fi

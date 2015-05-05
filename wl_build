@@ -142,6 +142,9 @@ if [ ${INCLUDE_XWAYLAND} ]; then
 	gen xf86driproto
 	compile
 
+	gen randrproto
+	compile
+
 	gen libxkbfile
 	compile
 
@@ -176,6 +179,6 @@ git clean -xfd
     --enable-headless-compositor \
 	--enable-demo-clients-install
 compile
-distcheck
+#distcheck
 
 cd $WLROOT
