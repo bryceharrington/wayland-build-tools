@@ -172,7 +172,7 @@ echo "weston"
 cd $WLROOT/weston
 git clean -xfd
 ./autogen.sh --prefix=$WLD \
-	--with-cairo=gl \
+	--with-cairo=image \
 	--with-xserver-path=$WLD/bin/Xwayland \
 	--enable-setuid-install=no \
 	--enable-clients \
