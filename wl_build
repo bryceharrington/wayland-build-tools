@@ -184,4 +184,6 @@ git clean -xfd
 compile
 #distcheck
 
+cp weston.ini $HOME/.config/
+
 cd $WLROOT
