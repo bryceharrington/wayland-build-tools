@@ -11,6 +11,9 @@ clone_or_update() {
     repo=$1
     dest=$(basename $repo)
 
+    if [ ! -d ${WLROOT} ]; then
+            mkdir -p ${WLROOT}
+    fi
     cd ${WLROOT}
     echo
     echo $dest
