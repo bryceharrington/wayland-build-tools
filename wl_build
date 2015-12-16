@@ -41,6 +41,9 @@ mkdir -p $WLD/share/aclocal
 gen wayland
 compile
 
+gen wayland-protocols
+compile
+
 gen drm --disable-libkms
 compile
 
