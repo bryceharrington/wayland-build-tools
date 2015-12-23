@@ -41,6 +41,9 @@ mkdir -p $WLD/share/aclocal
 gen wayland
 compile
 
+gen wayland-protocols
+compile
+
 gen drm --disable-libkms
 compile
 
@@ -180,5 +183,7 @@ git clean -xfd
 	--enable-demo-clients-install
 compile
 #distcheck
+
+cp weston.ini $HOME/.config/
 
 cd $WLROOT
