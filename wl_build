@@ -187,6 +187,9 @@ git clean -xfd
 compile
 #distcheck
 
-cp weston.ini $HOME/.config/
+# Set up config file if it isn't there already
+if [ ! -e $HOME/.config/weston.ini ]; then
+	cp weston.ini $HOME/.config/
+fi
 
 cd $WLROOT
