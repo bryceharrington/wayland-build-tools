@@ -13,6 +13,7 @@ sudo apt-get -y install linux-libc-dev
 sudo apt-get -y install libexpat1-dev
 sudo apt-get -y install libmtdev-dev
 sudo apt-get -y install libpam0g-dev
+sudo apt-get -y install libunwind8-dev
 
 sudo apt-get -y install llvm-dev
 sudo apt-get -y install python-mako
