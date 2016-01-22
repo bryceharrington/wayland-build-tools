@@ -74,13 +74,15 @@ echo
 echo "mesa"
 cd $WLROOT/mesa
 git clean -xfd
-./autogen.sh --prefix=$WLD --enable-gles2 --disable-gallium-egl \
-    --with-egl-platforms=x11,wayland,drm --enable-gbm --enable-shared-glapi \
+./autogen.sh --prefix=$WLD \
+	--enable-gles2 \
+	--disable-gallium-egl \
+    --with-egl-platforms=x11,wayland,drm \
+	--enable-gbm \
+	--enable-shared-glapi \
     --disable-llvm-shared-libs \
 	--disable-dri3 \
     --with-gallium-drivers=swrast,nouveau,r300,r600
-
-#   --disable-opencl \
 compile
 
 
