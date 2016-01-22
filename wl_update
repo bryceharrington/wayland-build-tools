@@ -18,5 +18,6 @@ git_pull libxkbcommon
 git_pull pixman
 git_pull cairo
 git_pull libunwind
+git_pull wayland-protocols
 git_pull libinput
 git_pull weston
