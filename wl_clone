@@ -40,7 +40,6 @@ clone_or_update() {
 }
 
 clone_or_update git://anongit.freedesktop.org/wayland/wayland
-clone_or_update git://anongit.freedesktop.org/wayland/wayland-protocols
 clone_or_update git://anongit.freedesktop.org/git/mesa/drm
 clone_or_update git://anongit.freedesktop.org/xcb/proto
 clone_or_update git://anongit.freedesktop.org/xorg/util/macros
