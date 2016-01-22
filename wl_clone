@@ -8,34 +8,35 @@
 
 
 clone_or_update() {
-    repo=$1
-    dest=$(basename $repo)
+	repo=$1
+	dest=$(basename $repo)
 
-    if [ ! -d ${WLROOT} ]; then
-            mkdir -p ${WLROOT}
-    fi
-    cd ${WLROOT}
-    echo
-    echo $dest
-    if [ ! -d ${dest} ]; then
+	cd ${WLROOT}
+	if [ $? != 0 ]; then
+		echo "Error: Could not cd to ${WLROOT}.  Does it exist?"
+        exit 1
+	fi
+	echo
+	echo $dest
+	if [ ! -d ${dest} ]; then
 		git clone ${repo} ${dest}
 		if [ $? != 0 ]; then
 			echo "Error: Could not clone repository"
 			exit 1
 		fi
-    fi
-    cd ${dest}
-    git checkout master
-    if [ $? != 0 ]; then
+	fi
+	cd ${dest}
+	git checkout master
+	if [ $? != 0 ]; then
 		echo "Error: Problem checking out master"
 		exit 1
-    fi
-    git pull
-    if [ $? != 0 ]; then
+	fi
+	git pull
+	if [ $? != 0 ]; then
 		echo "Error: Could not pull from upstream"
 		exit 1
-    fi
-    cd ${WLROOT}
+	fi
+	cd ${WLROOT}
 }
 
 clone_or_update git://anongit.freedesktop.org/wayland/wayland
