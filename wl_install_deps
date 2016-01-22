@@ -9,6 +9,7 @@ sudo apt-get -y install pkg-config quilt python-libxml2
 # wayland/weston specific stuff
 sudo apt-get -y install xmlto
 sudo apt-get -y install doxygen
+sudo apt-get -y install graphviz
 sudo apt-get -y install linux-libc-dev
 sudo apt-get -y install libexpat1-dev
 sudo apt-get -y install libmtdev-dev
@@ -32,7 +33,7 @@ if [ ${INCLUDE_XWAYLAND} ]; then
 	#sudo apt-get -y install libdrm-dev
 	sudo apt-get -y install libx11-dev
 	sudo apt-get -y install libx11-xcb-dev
-    #sudo apt-get -y install x11proto-dri3-dev
+	#sudo apt-get -y install x11proto-dri3-dev
 	sudo apt-get -y install libxdamage-dev
 	sudo apt-get -y install libxext-dev
 	sudo apt-get -y install libxfixes-dev
